@@ -1,4 +1,4 @@
-
+import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
 import IconGrid from "@/app/components/Card";
 
@@ -30,6 +30,7 @@ export default function Port() {
           <IconGrid />
         </div>
       </div>
+      <Footer />
       
     </>
   );
