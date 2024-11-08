@@ -3,9 +3,7 @@
 // import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation"; // Import useRouter
 import { useCallback, useEffect, useState } from "react";
-import {
-  Menu
-} from "@headlessui/react";
+import { Menu } from "@headlessui/react";
 import { ArrowLeft } from "lucide-react";
 
 type NavigationType = "single" | "multi";
@@ -22,9 +20,7 @@ type NavbarProps<T extends NavigationType> = {
   backUrl?: string; // Optional prop for back button URL
 };
 
-export default function Navbar<T extends NavigationType>(
-  props: NavbarProps<T>
-) {
+export default function Navbar<T extends NavigationType>(props: NavbarProps<T>) {
   const [hash, setHash] = useState<string>("");
   const pathname = usePathname();
   const router = useRouter(); // Initialize useRouter
@@ -76,8 +72,27 @@ export default function Navbar<T extends NavigationType>(
             */}
           </div>
 
-        
-
+          {/* Navigation Menu */}
+          <div className="flex gap-6">
+            {props.items.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => {
+                  if (props.navigationType === "multi") {
+                    router.push(item.path);
+                  } else {
+                    setHash(item.path);
+                  }
+                  close(); // Close the menu when a link is clicked
+                }}
+                className={`${
+                  isLinkActive(item.path) ? "text-blue-500" : "text-gray-500"
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
+          </div>
         </>
       )}
     </Menu>

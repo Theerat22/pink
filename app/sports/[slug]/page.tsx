@@ -2,18 +2,33 @@
 import { useState, useEffect } from "react";
 import Navbar from "@/app/components/Navbar";
 import { notFound } from "next/navigation";
-import { useParams } from "next/navigation"; // Import useParams
+import { useParams } from "next/navigation";
+
+interface Player {
+  id: number;
+  name: string;
+  fullname: string;
+  class: string;
+}
+
+interface CategoryData {
+  category: string;
+  title: string;
+  players: Player[];
+}
+
+interface SportsData {
+  [slug: string]: CategoryData[];
+}
 
 export default function RoomDetails() {
-  const [sportsData, setSportsData] = useState<any>(null);
+  const [sportsData, setSportsData] = useState<SportsData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Use the useParams hook to get dynamic parameters
   const params = useParams();
-  const slug = params?.slug; // Extract the slug from params
+  const slug = params?.slug;
 
   useEffect(() => {
-    // Fetch data from the JSON file
     fetch("/sportsData.json")
       .then((response) => {
         if (!response.ok) {
@@ -35,14 +50,13 @@ export default function RoomDetails() {
   }
 
   if (!sportsData || !slug) {
-    return <div>Loading...</div>; // Show loading state until data is fetched
+    return <div>Loading...</div>;
   }
 
-  // Access the data for the specific sport using the slug
-  const sport = sportsData[slug as keyof typeof sportsData];
+  const sport = sportsData[slug as keyof SportsData];
 
   if (!sport) {
-    notFound(); // If sport is not found in data, return a 404 page
+    notFound();
   }
 
   return (
@@ -64,7 +78,7 @@ export default function RoomDetails() {
           </div>
 
           {/* Iterate over the categories within the sport */}
-          {sport.map((categoryData: { category: string; title: string; players: Array<any> }) => (
+          {sport.map((categoryData) => (
             <div key={categoryData.category}>
               <h2 className="text-2xl mt-10">{categoryData.title}</h2>
               <div className="w-full flex justify-center mt-8">
@@ -78,7 +92,7 @@ export default function RoomDetails() {
                     </tr>
                   </thead>
                   <tbody>
-                    {categoryData.players.map((player: { id: number; name: string; fullname: string; class: string }) => (
+                    {categoryData.players.map((player) => (
                       <tr key={player.id}>
                         <td className="px-4 py-2 border">{player.id}</td>
                         <td className="px-4 py-2 border">{player.fullname}</td>
