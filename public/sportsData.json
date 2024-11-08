@@ -1,0 +1,23 @@
+[
+    {
+      "title": "ฟลอร์บอล",
+      "category": 1,
+      "persons": ["นาย A", "นาย B"]
+    },
+    {
+      "title": "ฟุตบอล",
+      "category": 2,
+      "persons": ["นาย C", "นาย D"]
+    },
+    {
+      "title": "บาสเก็ตบอล",
+      "category": 1,
+      "persons": ["นาย E", "นาย F"]
+    },
+    {
+      "title": "ปิงปอง",
+      "category": 3,
+      "persons": ["นาย G", "นาย H"]
+    }
+  ]
+  
