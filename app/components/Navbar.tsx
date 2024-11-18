@@ -52,7 +52,6 @@ export default function Navbar<T extends NavigationType>(props: NavbarProps<T>) 
       as="nav"
       className="z-40 top-0 left-0 w-[100vw] flex items-center justify-between p-6 lg:p-8 fixed"
     >
-      {({ close }) => (
         <>
           {/* Back Button on the Left */}
           <div className="flex items-center gap-4">
@@ -60,8 +59,8 @@ export default function Navbar<T extends NavigationType>(props: NavbarProps<T>) 
               onClick={() => router.back()} // Use router.back() to navigate back
               className="flex items-center gap-2"
             >
-              <ArrowLeft className="h-6 w-6" />
-              <span className="font-bold text-lg">ย้อนกลับ</span>
+              <ArrowLeft className="h-6 w-6" color="black" />
+              <span className="font-bold text-lg text-black">ย้อนกลับ</span>
             </button>
             {/* Alternatively, use the optional backUrl prop if provided */}
             {/* 
@@ -72,29 +71,8 @@ export default function Navbar<T extends NavigationType>(props: NavbarProps<T>) 
             */}
           </div>
 
-          {/* Navigation Menu */}
-          <div className="flex gap-6">
-            {props.items.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => {
-                  if (props.navigationType === "multi") {
-                    router.push(item.path);
-                  } else {
-                    setHash(item.path);
-                  }
-                  close(); // Close the menu when a link is clicked
-                }}
-                className={`${
-                  isLinkActive(item.path) ? "text-blue-500" : "text-gray-500"
-                }`}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
+        
         </>
-      )}
     </Menu>
   );
 }

@@ -72,7 +72,7 @@ export default function RoomDetails() {
       <main>
         <section className="lg:min-h-screen px-10 sm:px-20 md:px-32 lg:mb-12 lg:px-60 mx-auto max-w-[75rem]">
           <div className="justify-center mt-24">
-            <h1 className="text-4xl text-center md:text-6xl font-semibold mb-4 lg:text-5xl ">
+            <h1 className="text-4xl text-center text-black md:text-6xl font-semibold mb-4 lg:text-5xl ">
               รายชื่อนักกีฬา {sport[0]?.category}
             </h1>
           </div>
@@ -80,8 +80,8 @@ export default function RoomDetails() {
           {/* Iterate over the categories within the sport */}
           {sport.map((categoryData) => (
             <div key={categoryData.category}>
-              <h2 className="text-2xl mt-10">{categoryData.title}</h2>
-              <div className="w-full flex justify-center mt-8">
+              <h2 className="text-2xl mt-10 text-black font-bold">{categoryData.title}</h2>
+              <div className="w-full flex justify-center mt-8 text-black">
                 <table className="table-auto w-full border-collapse">
                   <thead>
                     <tr>
