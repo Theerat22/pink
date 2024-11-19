@@ -12,7 +12,7 @@ interface SeatingTableProps {
 }
 
 const SeatingTable: React.FC<SeatingTableProps> = ({ data }) => {
-  const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
+  const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
   const columns = [1, 2, 3, 4, 5];
 
   const [seatMap, setSeatMap] = useState<Map<string, string>>(

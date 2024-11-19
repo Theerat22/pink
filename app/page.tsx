@@ -3,22 +3,25 @@ import Navbar from "@/app/components/Navbar";
 import IconGrid from "@/app/components/Card";
 
 export default function Port() {
-
   return (
-    <>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Navbar */}
       <Navbar />
-      <div className="lg:min-h-screen px-10 sm:px-20 md:px-32 lg:mb-12 lg:px-60 mx-auto max-w-[75rem]">
-        <div className="justify-center mt-24">
-            <h1 className="text-4xl text-center text-black md:text-6xl font-semibold mb-4 lg:text-5xl ">
-                รายชื่อนักกีฬา <span className="text-pink-500 underline">สีชมพู</span>
-            </h1>
-        </div>
-        <div className="w-full flex justify-center">
+
+      {/* Main Content */}
+      <main className="flex-grow flex flex-col items-center">
+        <section className="w-full px-4 sm:px-6 lg:px-8 mt-24 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+            รายชื่อนักกีฬา <span className="text-pink-500 underline">สีชมพู</span>
+          </h1>
+        </section>
+        <section className="w-full px-4 mb-10 sm:px-6 lg:px-8">
           <IconGrid />
-        </div>
-      </div>
+        </section>
+      </main>
+
+      {/* Footer */}
       <Footer />
-      
-    </>
+    </div>
   );
 }
