@@ -15,7 +15,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "CD Pink 2024",
-  description: "เว็ปไซต์นี้ใช้ในการดูนักกีฬาสีชมพู 2024",
+  description: "เว็ปไซต์นี้ใช้ในการดูรายชื่อนักกีฬา และประชาสัมพันธ์สีชมพู 2024 ",
 };
 
 export default function RootLayout({
