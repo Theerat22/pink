@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-
+import ChartWithLabels from "./Chart";
 interface Person {
   id: number;
   name: string;
@@ -13,6 +13,12 @@ interface SeatingTableProps {
 }
 
 const SeatingTable: React.FC<SeatingTableProps> = ({ data }) => {
+  const labelsData = [
+    { name: "ม.1", color: "bg-orange-400" },
+    { name: "ม.2", color: "bg-blue-400" },
+    { name: "ม.3", color: "bg-purple-400" },
+    { name: "ม.4", color: "bg-pink-400" }
+  ];
   const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"];
   const columns = [1, 2, 3, 4, 5];
 
@@ -104,9 +110,10 @@ const SeatingTable: React.FC<SeatingTableProps> = ({ data }) => {
               >
                 {personName !== "ว่าง" ? personName : ""}
                 {/* Tooltip */}
-                <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-800 text-white text-xs sm:text-sm rounded-md p-2 shadow-lg">
-                  {personName}
+                <div className="absolute  transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gray-800 text-white text-xs sm:text-sm rounded-md p-2 shadow-lg z-10">
+                  {personName} - ม.{personGrade}
                 </div>
+
               </div>
             );
           })}
@@ -168,7 +175,9 @@ const SeatingTable: React.FC<SeatingTableProps> = ({ data }) => {
           </div>
         </div>
       )}
+      <ChartWithLabels labels={labelsData} />
     </div>
+    
   );
 };
 
