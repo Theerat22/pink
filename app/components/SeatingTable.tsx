@@ -51,7 +51,7 @@ const SeatingTable: React.FC<SeatingTableProps> = ({ data }) => {
       case 1:
         return "bg-orange-400";
       case 2:
-        return "bg-blue-300";
+        return "bg-blue-400";
       case 3:
         return "bg-purple-400";
       case 4:
