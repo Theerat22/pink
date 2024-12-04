@@ -1,15 +1,16 @@
+import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
-export async function GET(res) {
+export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("sports");
 
     const posts = await db.collection("sports").find({}).toArray();
-
-    res.json(posts);
+    console.log(posts);
+    return NextResponse.json(posts); // Use NextResponse.json instead of res.json
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: e.message }); // Send error response to the client
+    return NextResponse.json({ error: e.message }, { status: 500 }); // Return error in case of failure
   }
 }
