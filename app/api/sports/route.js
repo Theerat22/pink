@@ -1,19 +1,15 @@
-import clientPromise from '@/lib/mongodb'
+import clientPromise from '@/lib/mongodb';
 
-export default async (req, res) => {
-    try {
+export async function GET(res) {
+  try {
+    const client = await clientPromise;
+    const db = client.db("sports");
 
-        const client = await clientPromise;
-        const db = client.db("posts");
+    const posts = await db.collection("sports").find({}).toArray();
 
-        const posts = await db.collection("posts").find({}).toArray();
-
-        res.json(posts);
-
-    } catch(e) {
-
-        console.error(e);
-        throw new Error(e).message;
-
-    }
+    res.json(posts);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message }); // Send error response to the client
+  }
 }

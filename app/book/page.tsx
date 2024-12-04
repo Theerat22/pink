@@ -1,4 +1,3 @@
-// app/book/page.tsx
 "use client";
 import { useEffect, useState } from "react";
 
@@ -8,14 +7,14 @@ type Post = {
   owner: string | null;
 };
 
-export default async function Booking() {
+export default  function Booking() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   // Fetch data inside the server component
   const fetchPosts = async () => {
     try {
-      let response = await fetch('/api/sports');
-      let postsData = await response.json();
+      const response = await fetch('/api/sports');
+      const postsData = await response.json();
       setPosts(postsData); // Update state with fetched posts
     } catch (error) {
       console.error(error);
