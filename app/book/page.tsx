@@ -51,8 +51,8 @@ export default function SportsTable() {
       }, {});
 
       setGroupedPostsByType(groupedByType);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      // console.error(error);
     } finally {
       setLoading(false);
     }
