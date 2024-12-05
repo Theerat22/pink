@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react"
+import Link from "next/link";
+import { MdOutlineReport } from "react-icons/md";
 
 type Post = {
   _id: string;
@@ -93,12 +95,17 @@ export default function SportsTable() {
 
   return (
     
+    
     <div className="p-6 bg-white min-h-screen text-black">
       <Analytics/>
+      
+      <Link href={"https://forms.gle/vyz1TZFJGZLhgGkd9"}>
+          <p className=" text-md font-semibold mb-4 underline text-right text-blue-500">รายงาน</p>
+      </Link>
+
       <h1 className="text-3xl font-bold text-pink-600 mt-5 mb-6 text-center">
         ตารางแสดงรายชื่อนักกีฬา
       </h1>
-      {loading && <div className="text-gray-600 absolute">กำลังโหลดข้อมูล...</div>}
       {Object.keys(groupedPostsByType).length > 0 ? (
         Object.keys(groupedPostsByType)
           .sort((a, b) => Number(a) - Number(b))
@@ -163,7 +170,10 @@ export default function SportsTable() {
             );
           })
       ) : (
-        <div className="text-center">ไม่พบข้อมูล</div>
+        <div className="text-center">ไม่พบข้อมูล
+        {loading && <div className="text-gray-600 mt-4 text-center">กำลังโหลดข้อมูล...</div>}
+        </div>
+        
       )}
 
       {/* Modal for inputting name */}
