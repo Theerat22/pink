@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react"
 
 type Post = {
   _id: string;
@@ -91,7 +92,9 @@ export default function SportsTable() {
   };
 
   return (
+    
     <div className="p-6 bg-white min-h-screen text-black">
+      <Analytics/>
       <h1 className="text-3xl font-bold text-pink-600 mt-5 mb-6 text-center">
         ตารางแสดงรายชื่อนักกีฬา
       </h1>
