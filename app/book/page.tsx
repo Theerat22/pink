@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 type Post = {
@@ -30,14 +29,12 @@ const typeTitles: { [key: number]: string } = {
 export default function SportsTable() {
   const [groupedPostsByType, setGroupedPostsByType] = useState<GroupedPostsByType>({});
   const [loading, setLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string | null>(null);  // Keep error state for handling errors
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [inputName, setInputName] = useState<number | null>(null);  // Store as number or null
+  const [inputName, setInputName] = useState<number | null>(null);
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
 
   const fetchPosts = async () => {
     setLoading(true);
-    // setError(null);
     try {
       const response = await fetch("/api/sports");
       if (!response.ok) {
@@ -54,23 +51,24 @@ export default function SportsTable() {
       }, {});
 
       setGroupedPostsByType(groupedByType);
-    } catch {
-      // const e = error as Error;
-      // setError(e.message);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts(); // Fetch initially
+    const intervalId = setInterval(fetchPosts, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   const handleSave = async () => {
     if (inputName === null || !selectedSeat) return;
 
     try {
-      // Send the POST request to the backend to update the owner
       const response = await fetch("/api/book", {
         method: "POST",
         headers: {
@@ -82,15 +80,12 @@ export default function SportsTable() {
         }),
       });
 
-      if (!response.ok) {
-        // const errorData = await response.json();
-        // setError(errorData.error || "Unknown error");
-      } else {
+      if (response.ok) {
         setIsModalOpen(false); // Close the modal
         fetchPosts(); // Refresh the posts list
       }
-    } catch  {
-      // setError("ไม่สามารถบันทึกข้อมูลได้");
+    } catch {
+      console.error("Failed to save the data");
     }
   };
 
@@ -100,7 +95,6 @@ export default function SportsTable() {
         ตารางแสดงรายชื่อนักกีฬา
       </h1>
       {loading && <div className="text-gray-600">กำลังโหลดข้อมูล...</div>}
-      {/* {error && <div className="text-red-500 text-center">{error}</div>} Display error message */}
       {Object.keys(groupedPostsByType).length > 0 ? (
         Object.keys(groupedPostsByType)
           .sort((a, b) => Number(a) - Number(b))
