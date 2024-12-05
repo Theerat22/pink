@@ -30,14 +30,14 @@ const typeTitles: { [key: number]: string } = {
 export default function SportsTable() {
   const [groupedPostsByType, setGroupedPostsByType] = useState<GroupedPostsByType>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);  // Keep error state for handling errors
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [inputName, setInputName] = useState<number | null>(null);  // Store as number or null
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
 
   const fetchPosts = async () => {
     setLoading(true);
-    setError(null);
+    // setError(null);
     try {
       const response = await fetch("/api/sports");
       if (!response.ok) {
@@ -54,9 +54,9 @@ export default function SportsTable() {
       }, {});
 
       setGroupedPostsByType(groupedByType);
-    } catch (error) {
-      const e = error as Error;
-      setError(e.message);
+    } catch {
+      // const e = error as Error;
+      // setError(e.message);
     } finally {
       setLoading(false);
     }
@@ -83,14 +83,14 @@ export default function SportsTable() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.error || "Unknown error");
+        // const errorData = await response.json();
+        // setError(errorData.error || "Unknown error");
       } else {
         setIsModalOpen(false); // Close the modal
         fetchPosts(); // Refresh the posts list
       }
-    } catch (error) {
-      setError("ไม่สามารถบันทึกข้อมูลได้");
+    } catch  {
+      // setError("ไม่สามารถบันทึกข้อมูลได้");
     }
   };
 
@@ -100,7 +100,7 @@ export default function SportsTable() {
         ตารางแสดงรายชื่อนักกีฬา
       </h1>
       {loading && <div className="text-gray-600">กำลังโหลดข้อมูล...</div>}
-      {error && <div className="text-red-500 text-center">{error}</div>}
+      {/* {error && <div className="text-red-500 text-center">{error}</div>} Display error message */}
       {Object.keys(groupedPostsByType).length > 0 ? (
         Object.keys(groupedPostsByType)
           .sort((a, b) => Number(a) - Number(b))
