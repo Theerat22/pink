@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/react"
 import Link from "next/link";
-import { MdOutlineReport } from "react-icons/md";
+//import { MdOutlineReport } from "react-icons/md";
 
 type Post = {
   _id: string;
