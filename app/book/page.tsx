@@ -32,6 +32,7 @@ export default function SportsTable() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [inputName, setInputName] = useState<number | null>(null);
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
+  const [selectedSportType, setSelectedSportType] = useState<string | null>(null); // Store selected sport type
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -141,6 +142,7 @@ export default function SportsTable() {
                                   onClick={() => {
                                     setIsModalOpen(true);
                                     setSelectedSeat(post._id); // Save the post _id
+                                    setSelectedSportType(typeTitles[post.type]); // Save the sport type title
                                   }}
                                   className="px-4 py-2 bg-pink-500 text-white font-bold rounded-lg hover:bg-pink-600"
                                 >
@@ -166,6 +168,7 @@ export default function SportsTable() {
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
             <h3 className="text-xl font-semibold mb-4 text-pink-600">กรอกเลขประจำตัว</h3>
+            <p className="text-sm mb-4 text-gray-600"><span className="font-bold">ประเภทกีฬา :</span> {selectedSportType}</p> {/* Display the sport type */}
             <input
               type="number"
               value={inputName ?? ""}
