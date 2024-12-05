@@ -1,75 +1,201 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 type Post = {
   _id: string;
   title: string;
   owner: string | null;
+  type: number;
+  gender: string;
+  level: string;
 };
 
-// Define a more specific error type
-type FetchError = {
-  message: string;
+type GroupedPostsByType = {
+  [type: number]: {
+    [level: string]: Post[];
+  };
 };
 
-export default function Booking() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState<boolean>(false); // Add loading state
-  const [error, setError] = useState<string | null>(null); // Add error state
+const typeTitles: { [key: number]: string } = {
+  1: "รายการที่ 1 : วิ่ง 40 เมตร",
+  2: "รายการที่ 2 : วิ่ง 80 เมตร",
+  3: "รายการที่ 3 : วิ่งผลัดกระสอบ 4x80 เมตร",
+  4: "รายการที่ 4 : วิ่งสามขา 40 เมตร",
+  5: "รายการที่ 5 : วิ่งผลัดกะลา",
+  6: "รายการที่ 6 : ชักเย่อ 16 คน",
+  7: "รายการที่ 7 : วิ่ง 80 เมตร",
+};
+
+export default function SportsTable() {
+  const [groupedPostsByType, setGroupedPostsByType] = useState<GroupedPostsByType>({});
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [inputName, setInputName] = useState<number | null>(null);  // Store as number or null
+  const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
 
   const fetchPosts = async () => {
-    setLoading(true); // Set loading to true before fetching
-    setError(null); // Reset previous error
+    setLoading(true);
+    setError(null);
     try {
-      const response = await fetch('/api/sports');
+      const response = await fetch("/api/sports");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const postsData = await response.json();
-      setPosts(postsData); // Update state with fetched posts
+      const posts: Post[] = await response.json();
+
+      // Group posts by type and level
+      const groupedByType = posts.reduce<GroupedPostsByType>((acc, post) => {
+        if (!acc[post.type]) acc[post.type] = {};
+        if (!acc[post.type][post.level]) acc[post.type][post.level] = [];
+        acc[post.type][post.level].push(post);
+        return acc;
+      }, {});
+
+      setGroupedPostsByType(groupedByType);
     } catch (error) {
-      // Ensure the error is a standard Error object and type it correctly
-      const e = error as FetchError;
-      setError(e.message); // Set error if fetching fails
-      console.error(e);
+      const e = error as Error;
+      setError(e.message);
     } finally {
-      setLoading(false); // Set loading to false after fetch attempt
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPosts(); // Fetch posts when the component mounts
+    fetchPosts();
   }, []);
 
+  const handleSave = async () => {
+    if (inputName === null || !selectedSeat) return;
+
+    try {
+      // Send the POST request to the backend to update the owner
+      const response = await fetch("/api/book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idnumber: inputName,  // Send idnumber as a number
+          postId: selectedSeat,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.error || "Unknown error");
+      } else {
+        setIsModalOpen(false); // Close the modal
+        fetchPosts(); // Refresh the posts list
+      }
+    } catch (error) {
+      setError("ไม่สามารถบันทึกข้อมูลได้");
+    }
+  };
+
   return (
-    <div className="p-4 text-black">
-      <h1 className="text-2xl font-bold mt-8 text-black">Sports</h1>
-      {loading && <div>Loading...</div>} {/* Display loading state */}
-      {error && <div className="text-red-500">Error: {error}</div>} {/* Display error state */}
-      <table className="min-w-full table-auto mt-4">
-        <thead>
-          <tr>
-            <th className="border px-4 py-2 text-black">Title</th>
-            <th className="border px-4 py-2 text-black">Owner</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.length > 0 ? (
-            posts.map((sport) => (
-              <tr key={sport._id}>
-                <td className="border px-4 py-2 text-black">{sport.title}</td>
-                <td className="border px-4 py-2 text-black">{sport.owner || "None"}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={2} className="border px-4 py-2 text-center text-black">
-                No sports available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="p-6 bg-white min-h-screen text-black">
+      <h1 className="text-3xl font-bold text-pink-600 mt-5 mb-6 text-center">
+        ตารางแสดงรายชื่อนักกีฬา
+      </h1>
+      {loading && <div className="text-gray-600">กำลังโหลดข้อมูล...</div>}
+      {error && <div className="text-red-500 text-center">{error}</div>}
+      {Object.keys(groupedPostsByType).length > 0 ? (
+        Object.keys(groupedPostsByType)
+          .sort((a, b) => Number(a) - Number(b))
+          .map((type) => {
+            const numericType = Number(type);
+            const postsByType = groupedPostsByType[numericType];
+
+            if (!postsByType) {
+              return null;
+            }
+
+            return (
+              <div key={numericType} className="mb-8">
+                <h2 className="text-2xl font-semibold text-pink-500 mb-4">
+                  {typeTitles[numericType] || `รายการที่ ${numericType}`}
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border-collapse table-auto bg-white shadow-md rounded-lg">
+                    <thead className="bg-pink-200">
+                      <tr>
+                        <th className="border border-pink-300 px-4 py-2 text-left text-sm font-bold text-pink-600">ระดับ</th>
+                        <th className="border border-pink-300 px-4 py-2 text-left text-sm font-bold text-pink-600">เพศ</th>
+                        <th className="border border-pink-300 px-4 py-2 text-left text-sm font-bold text-pink-600">ชื่อนักกีฬา</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.keys(postsByType).map((level) =>
+                        postsByType[level].map((post, index) => (
+                          <tr key={post._id}>
+                            {index === 0 && (
+                              <td
+                                className="border border-pink-300 px-4 py-2 font-bold bg-white text-pink-600"
+                                rowSpan={postsByType[level].length}
+                              >
+                                {level}
+                              </td>
+                            )}
+                            <td className="border border-pink-300 px-4 py-2 text-sm">{post.gender}</td>
+                            <td className="border border-pink-300 px-4 py-2 text-sm text-center">
+                              {post.owner ? (
+                                post.owner
+                              ) : (
+                                <button
+                                  onClick={() => {
+                                    setIsModalOpen(true);
+                                    setSelectedSeat(post._id); // Save the post _id
+                                  }}
+                                  className="px-4 py-2 bg-pink-500 text-white font-bold rounded-lg hover:bg-pink-600"
+                                >
+                                  ลงชื่อ
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          })
+      ) : (
+        <div className="text-center">ไม่พบข้อมูล</div>
+      )}
+
+      {/* Modal for inputting name */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h3 className="text-xl font-semibold mb-4 text-pink-600">กรอกเลขประจำตัว</h3>
+            <input
+              type="number"
+              value={inputName ?? ""}
+              onChange={(e) => setInputName(Number(e.target.value))}
+              className="border border-gray-300 px-4 py-2 rounded-lg mb-4 w-full"
+              placeholder="เลขประจำตัว 4 หลัก"
+            />
+            <div className="flex justify-end">
+              <button
+                onClick={handleSave}
+                className="bg-pink-500 text-white font-bold px-4 py-2 rounded-lg hover:bg-pink-600"
+              >
+                ตกลง
+              </button>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="ml-2 px-4 py-2 font-bold text-pink-600 hover:text-pink-800"
+              >
+                ยกเลิก
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

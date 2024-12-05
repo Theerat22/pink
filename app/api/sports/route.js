@@ -7,7 +7,7 @@ export async function GET() {
     const db = client.db("sports");
 
     const posts = await db.collection("sports").find({}).toArray();
-    console.log(posts);
+    // console.log(posts);
     return NextResponse.json(posts); // Use NextResponse.json instead of res.json
   } catch (e) {
     console.error(e);
