@@ -95,7 +95,7 @@ export default function SportsTable() {
       <h1 className="text-3xl font-bold text-pink-600 mt-5 mb-6 text-center">
         ตารางแสดงรายชื่อนักกีฬา
       </h1>
-      {loading && <div className="text-gray-600">กำลังโหลดข้อมูล...</div>}
+      {loading && <div className="text-gray-600 absolute">กำลังโหลดข้อมูล...</div>}
       {Object.keys(groupedPostsByType).length > 0 ? (
         Object.keys(groupedPostsByType)
           .sort((a, b) => Number(a) - Number(b))
