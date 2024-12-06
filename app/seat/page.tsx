@@ -47,7 +47,7 @@ const HomePage = () => {
       { "id": 39, "name": "ภณ", "seat": "F4", "grade": 4 },
       { "id": 40, "name": "ได้", "seat": "G4", "grade": 4 },
       { "id": 41, "name": "พีพี", "seat": "H4", "grade": 2 },
-      { "id": 42, "name": "ว่าง", "seat": "I4", "grade": 0 },
+      { "id": 42, "name": "เปลหวาย", "seat": "I4", "grade": 1 },
       { "id": 43, "name": "ว่าง", "seat": "J4", "grade": 0 },
       { "id": 44, "name": "ว่าง", "seat": "K4", "grade": 0 },
       { "id": 45, "name": "ธัช", "seat": "A5", "grade": 1 },
