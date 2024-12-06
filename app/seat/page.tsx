@@ -2,7 +2,7 @@ import React from "react";
 import SeatingTable from "@/app/components/SeatingTable";
 import Footer from "../components/Footer";
 import { Analytics } from "@vercel/analytics/react"
-
+import Link from "next/link";
 const HomePage = () => {
   const data = [
     
@@ -73,6 +73,9 @@ const HomePage = () => {
         <h1 className="text-3xl mt-20 font-bold text-center text-gray-800 mb-6">
           ตารางที่นั่งสแตน <span className="text-pink-500 underline">สีชมพู</span>
         </h1>
+        <Link href={'https://forms.gle/sxEjvA8iS51tT3Qt6'}>
+          <p className=" text-center text-md text-blue-500 hover:underline">ขอเพิ่มรายชื่อ</p>
+        </Link>
         <SeatingTable data={data} />
       </div>
       
