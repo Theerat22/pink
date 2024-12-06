@@ -8,6 +8,7 @@ const HomePage = () => {
     // { id: 1, name: "สิทเอง", seat: "0" },
     // { id: 2, name: "กันนี่", seat: "B3" },
     // { id: 3, name: "แข่ว", seat: "C1" },
+    { id: 2, name: "test", seat: "A1" , grade : 3 },
   ];
 
   return (
